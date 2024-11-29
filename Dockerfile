@@ -1,16 +1,17 @@
-FROM --platform=linux/amd64 eclipse-temurin:17-jre
+# Use the openjdk:17-jdk-slim base image
+FROM openjdk:17-jdk-slim
+
+# Set the working directory to /app
 WORKDIR /app
 
-# Copy pre-built jar file
+# Copy the JAR file into the container
 COPY build/libs/*.jar app.jar
 
-# Environment variables for PostgreSQL connection
-ENV SPRING_DATASOURCE_URL=jdbc:postgresql://14.63.160.46:5432/reaction-ranking
-ENV SPRING_DATASOURCE_USERNAME=eztake
-ENV SPRING_DATASOURCE_PASSWORD=ezta1104
+# Copy the static resources into the container
+COPY src/main/resources/static /app/static
 
-# Port exposure
+# Expose the port that the application is running on
 EXPOSE 8080
 
-# Run application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Set the command to run the Spring Boot application
+CMD ["java", "-jar", "app.jar"]
